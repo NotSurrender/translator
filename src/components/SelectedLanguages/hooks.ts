@@ -3,6 +3,7 @@ import { TRANSLATOR_API } from '@/config'
 import { HttpClient } from '@/helpers/http-client'
 import { useLanguagesStore } from '@/stores/languages'
 import { useDialog } from 'primevue/usedialog'
+import type { MenuItem } from 'primevue/menuitem'
 import { useTranslatorStore } from '@/stores/translator'
 import LanguagePickList from '../LanguagePickList'
 import ConfirmationFooter from '../ConfirmationFooter'
@@ -14,8 +15,10 @@ export function useSelectedLanguages() {
   const languagesStore = useLanguagesStore()
   const translatorStore = useTranslatorStore()
 
-  const selectedLanguages = computed(() => {
-    return languagesStore.selectedLanguages.map(({ code }) => code)
+  const selectedLanguages = computed<MenuItem[]>(() => {
+    return languagesStore.selectedLanguages.map<MenuItem>(({ code }) => ({
+      label: code
+    }))
   })
 
   function openModal() {
