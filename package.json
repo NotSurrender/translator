@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "start": "node server.js",
     "dev": "vite",
-    "start": "run-p type-check build-only",
+    "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
@@ -12,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "pinia": "^2.0.32",
     "primevue": "^3.27.0",
     "vue": "^3.2.47"
