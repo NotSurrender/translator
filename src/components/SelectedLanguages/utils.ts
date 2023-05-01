@@ -1,6 +1,6 @@
 import type { MenuItem } from 'primevue/menuitem'
-import type { TranslatorApiLanguageResponseData } from '../TranslatorFooter/interfaces'
 import type { Language } from '@/stores/languages'
+import type { TranslatorApiLanguageResponseData } from '@/api/interfaces'
 
 export function convertApiDataLanguageToLanguage(
   data: TranslatorApiLanguageResponseData,
