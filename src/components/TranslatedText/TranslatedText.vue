@@ -1,5 +1,6 @@
 <template>
   <Textarea 
+    placeholder="Translation"
     :disabled="loaderStore.isLoading"
     :model-value="translatorStore.translatedText" 
   />

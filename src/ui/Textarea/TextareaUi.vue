@@ -5,6 +5,7 @@
     rows="5" 
     maxlength="1000" 
     cols="30"
+    :placeholder="placeholder"
     :disabled="disabled"
     v-on:input="$emit('update:modelValue', handleTextAreaChange($event))"
     :value="modelValue"
@@ -16,6 +17,7 @@ import Textarea from 'primevue/textarea';
 
 defineProps<{
   disabled?: boolean
+  placeholder?: string
   modelValue: string
 }>()
 

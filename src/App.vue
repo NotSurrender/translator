@@ -10,8 +10,8 @@ import TranslatorModule from './components/TranslatorModule';
 </template>
 
 <style scoped>
-body {
-  font-family: (--font-family);
+body, h1 {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol
 } 
 
 h1 {

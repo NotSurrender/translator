@@ -1,5 +1,6 @@
 <template>
-  <Textarea 
+  <Textarea
+    placeholder="Insert text"
     :disabled="loaderStore.isLoading"
     v-model="translatorStore.originalText"
   />

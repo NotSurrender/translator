@@ -7,8 +7,6 @@
       :modelValue="languagesStore.languagesValue"
       :moveAllToTargetProps="{ style: { display: 'none' } }"
       :moveAllToSourceProps="{ style: { display: 'none' } }"
-      :moveTopButtonProps="{ style: { display: 'none' }}"
-      :moveBottomButtonProps="{ style: { display: 'none' }}"
       :show-source-controls="false"
       :move-to-target-props="{ disabled: moveToTargetButtonDisabled }"
       :move-to-source-props="{ disabled: moveToSourceButtonDisabled }"
