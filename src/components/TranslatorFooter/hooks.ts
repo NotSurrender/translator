@@ -23,9 +23,11 @@ export function useTranslatorFooter() {
 
   async function handleTextTranslate() {
     loaderStore.isLoading = true
+    let originalText = translatorStore.originalText
     let translatedText = translatorStore.originalText
 
     for (let i = 0; i < languagesStore.selectedLanguages.length - 1; i++) {
+      originalText = translatedText
       try {
         const requestData: TranslatorApiTranslationRequestData = {
           from: languagesStore.selectedLanguages[i].code,
@@ -40,6 +42,7 @@ export function useTranslatorFooter() {
     }
 
     loaderStore.isLoading = false
+    translatorStore.originalText = originalText
     translatorStore.translatedText = translatedText
   }
 
