@@ -7,7 +7,7 @@ import type {
   PickListSelectionChangeEvent
 } from 'primevue/picklist'
 import type { Language } from '../../stores/languages'
-import { convertArrayToMap, findOccurrences, getEntityNormalizator } from '@/helpers/utils'
+import { convertArrayToMap, findOccurrences, getEntityNormalizor } from '@/helpers/utils'
 
 export function useLanguagePickList() {
   const languagesStore = useLanguagesStore()
@@ -53,13 +53,13 @@ export function useLanguagePickList() {
     const movedLanguages = languagesStore.getMovedLanguages()
     const occurrencesMap = findOccurrences(movedLanguages, 'code')
 
-    const entityNormalizator = getEntityNormalizator<Language, keyof Language, keyof Language>(
+    const entityNormalizor = getEntityNormalizor<Language, keyof Language, keyof Language>(
       occurrencesMap,
       'code',
       'id'
     )
 
-    movedLanguages.push(...languagesToMove.map<Language>(entityNormalizator))
+    movedLanguages.push(...languagesToMove.map<Language>(entityNormalizor))
     languagesStore.setMovedLanguages(movedLanguages)
   }
 
@@ -76,8 +76,7 @@ export function useLanguagePickList() {
   }
 
   function clearMovedLanguages() {
-    const [sourceLanguages] = languagesStore.languagesValue
-    languagesStore.setLanguagesValue([sourceLanguages, []])
+    languagesStore.setMovedLanguages([])
     moveToSourceButtonDisabled.value = true
   }
 

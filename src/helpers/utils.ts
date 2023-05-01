@@ -12,7 +12,7 @@ export function findOccurrences<T, Key extends keyof T>(array: T[], key: Key): M
   }, occurencesMap)
 }
 
-export const getEntityNormalizator =
+export const getEntityNormalizor =
   <T, KeyToFind extends keyof T, KeyToNormalize extends keyof T>(
     occurrencesMap: Map<T[KeyToFind], number>,
     keyToFind: KeyToFind,
