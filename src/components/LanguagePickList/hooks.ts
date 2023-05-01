@@ -14,7 +14,7 @@ export function useLanguagePickList() {
   const moveToTargetButtonDisabled = ref(true)
   const moveToSourceButtonDisabled = ref(true)
   const clearButtonDisabled = computed<boolean>(() => {
-    return !languagesStore.languagesValue[1].length
+    return !languagesStore.getMovedLanguages().length
   })
 
   function handleChangeSelection(event: PickListSelectionChangeEvent) {

@@ -1,12 +1,12 @@
 import { computed, onMounted } from 'vue'
 import { useLanguagesStore } from '@/stores/languages'
 import { useDialog } from 'primevue/usedialog'
-import type { MenuItem } from 'primevue/menuitem'
 import LanguagePickList from '../LanguagePickList'
 import ConfirmationFooter from '../ConfirmationFooter'
 import { convertApiDataLanguageToLanguage, convertLanguageToMenuItem } from './utils'
 import { queryLanguages } from '@/api/queries'
 import { useLoaderStore } from '@/stores/loader'
+import type { MenuItem } from 'primevue/menuitem'
 
 export function useSelectedLanguages() {
   const dialog = useDialog()

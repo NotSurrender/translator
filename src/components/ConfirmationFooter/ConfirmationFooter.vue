@@ -1,13 +1,11 @@
 <template>
   <Button 
-    type="button" 
     label="Cancel" 
     icon="pi pi-times" 
     text
     @click="closeDialog" 
   />
   <Button 
-    type="button" 
     label="Confirm" 
     icon="pi pi-check" 
     autofocus
@@ -30,5 +28,5 @@ function handleConfirm() {
 
 function closeDialog() {
   dialogRef?.value.close();
-};
+}
 </script>
