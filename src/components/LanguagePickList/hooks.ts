@@ -53,13 +53,13 @@ export function useLanguagePickList() {
     const movedLanguages = languagesStore.getMovedLanguages()
     const occurrencesMap = findOccurrences(movedLanguages, 'code')
 
-    const entityNormalizor = getEntityNormalizor<Language, keyof Language, keyof Language>(
-      occurrencesMap,
-      'code',
-      'id'
-    )
+    const setUniqueIdsForOccurencedLanguages = getEntityNormalizor<
+      Language,
+      keyof Language,
+      keyof Language
+    >(occurrencesMap, 'code', 'id')
 
-    movedLanguages.push(...languagesToMove.map<Language>(entityNormalizor))
+    movedLanguages.push(...languagesToMove.map<Language>(setUniqueIdsForOccurencedLanguages))
     languagesStore.setMovedLanguages(movedLanguages)
   }
 
