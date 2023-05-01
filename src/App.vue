@@ -4,39 +4,21 @@ import TranslatorModule from './components/TranslatorModule';
 
 <template>
   <main>
-    <TranslatorModule />
+    <h1>B-rain Tech Translator</h1>
+    <TranslatorModule class="translator" />
   </main>
 </template>
 
 <style scoped>
 body {
-    font-family: (--font-family);
+  font-family: (--font-family);
 } 
 
-header {
-  line-height: 1.5;
+h1 {
+  text-align: center;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.translator {
+  margin: 0 auto;
 }
 </style>
