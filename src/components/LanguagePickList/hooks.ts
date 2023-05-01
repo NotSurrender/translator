@@ -7,7 +7,7 @@ import type {
   PickListSelectionChangeEvent
 } from 'primevue/picklist'
 import type { Language } from '../../stores/languages'
-import { findOccurrencesAmount } from '@/helpers/utils'
+import { convertArrayToMap, findOccurrences, getEntityNormalizator } from '@/helpers/utils'
 
 export function useLanguagePickList() {
   const languagesStore = useLanguagesStore()
@@ -18,11 +18,20 @@ export function useLanguagePickList() {
   })
 
   function handleChangeSelection(event: PickListSelectionChangeEvent) {
-    const [[selectedSourceLanguage], [selectedMovedLanguage]] = event.value
-    const isSelectedOnlySourceLanguage = Boolean(selectedSourceLanguage && !selectedMovedLanguage)
-    const isSelectedOnlyMovedLanguage = Boolean(selectedMovedLanguage && !selectedSourceLanguage)
-    const isSelectedBothLanguages = Boolean(selectedSourceLanguage && selectedMovedLanguage)
-    const isLimitReached = languagesStore.languagesValue[1].length > 9
+    const [selectedSourceLanguages, selectedMovedLanguages] = event.value
+    const movedLanguages = languagesStore.getMovedLanguages()
+
+    const isLimitReached = selectedSourceLanguages.length + movedLanguages.length > 9
+
+    const isSelectedOnlySourceLanguage = Boolean(
+      selectedSourceLanguages.length && !selectedMovedLanguages.length
+    )
+    const isSelectedOnlyMovedLanguage = Boolean(
+      selectedMovedLanguages.length && !selectedSourceLanguages.length
+    )
+    const isSelectedBothLanguages = Boolean(
+      selectedSourceLanguages.length && selectedMovedLanguages.length
+    )
 
     if (isSelectedOnlySourceLanguage) {
       moveToSourceButtonDisabled.value = true
@@ -40,27 +49,25 @@ export function useLanguagePickList() {
   }
 
   function handleMoveToTarget({ items }: PickListMoveToTargetEvent) {
-    const [itemToMove] = items
-    const movedLanguages = languagesStore.languagesValue[1]
+    const languagesToMove = items as Language[]
+    const movedLanguages = languagesStore.getMovedLanguages()
+    const occurrencesMap = findOccurrences(movedLanguages, 'code')
 
-    const occurrencesCount = findOccurrencesAmount(
-      movedLanguages,
-      ({ code }) => itemToMove.code === code
+    const entityNormalizator = getEntityNormalizator<Language, keyof Language, keyof Language>(
+      occurrencesMap,
+      'code',
+      'id'
     )
 
-    const newItem: Language =
-      occurrencesCount > 0
-        ? { ...itemToMove, id: itemToMove.code + occurrencesCount + 1 }
-        : itemToMove
-
-    movedLanguages.push(newItem)
+    movedLanguages.push(...languagesToMove.map<Language>(entityNormalizator))
     languagesStore.setMovedLanguages(movedLanguages)
   }
 
   function handleMoveToSource({ items }: PickListMoveToSourceEvent) {
-    const movedLanguages = languagesStore.languagesValue[1]
-    const [{ id: idLanguageToMove }] = items
-    const updatedMovedLanguages = movedLanguages.filter(({ id }) => id !== idLanguageToMove)
+    const languagesToMove = items as Language[]
+    const languagesToMoveMap = convertArrayToMap(languagesToMove, 'id')
+    const movedLanguages = languagesStore.getMovedLanguages()
+    const updatedMovedLanguages = movedLanguages.filter(({ id }) => !languagesToMoveMap.has(id))
     languagesStore.setMovedLanguages(updatedMovedLanguages)
   }
 

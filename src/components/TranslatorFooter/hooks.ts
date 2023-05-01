@@ -10,7 +10,7 @@ export function useTranslatorFooter() {
   const languagesStore = useLanguagesStore()
   const loaderStore = useLoaderStore()
 
-  const disabled = computed(() => {
+  const disabled = computed<boolean>(() => {
     const isMinLanguagesSelected = languagesStore.selectedLanguages.length > 1
 
     return !translatorStore.originalText || loaderStore.isLoading || !isMinLanguagesSelected

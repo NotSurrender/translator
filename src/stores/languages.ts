@@ -22,6 +22,10 @@ export const useLanguagesStore = defineStore('languages', () => {
     }
   }
 
+  function getMovedLanguages() {
+    return languagesValue.value[1]
+  }
+
   function setMovedLanguages(languages: Language[]) {
     languagesValue.value = [languagesValue.value[0], languages]
   }
@@ -30,5 +34,12 @@ export const useLanguagesStore = defineStore('languages', () => {
     selectedLanguages.value = languagesValue.value[1]
   }
 
-  return { languagesValue, selectedLanguages, setLanguagesValue, setMovedLanguages, confirm }
+  return {
+    languagesValue,
+    selectedLanguages,
+    getMovedLanguages,
+    setLanguagesValue,
+    setMovedLanguages,
+    confirm
+  }
 })
