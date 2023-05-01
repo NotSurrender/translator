@@ -6,7 +6,7 @@
     maxlength="1000" 
     cols="30"
     :disabled="disabled"
-    v-on:input="$emit('update:modelValue', $event.target.value)"
+    v-on:input="$emit('update:modelValue', handleInputChange($event))"
     :value="modelValue"
   />
 </template>
@@ -20,8 +20,12 @@ defineProps<{
 }>()
 
 defineEmits<{
-  (e: 'update:modelValue', value: number): void
+  (e: 'update:modelValue', value: string): void
 }>()
+
+function handleInputChange(event: Event) {
+  return (event.target as HTMLInputElement).value
+}
 </script>
 
 <style scoped>
