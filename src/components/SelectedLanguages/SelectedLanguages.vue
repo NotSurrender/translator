@@ -1,5 +1,4 @@
 <template>
-	<div>
 		<Breadcrumb 
 			v-if="selectedLanguages.length"
 			:style="{ cursor: loaderStore.isLoading ? 'wait' : 'pointer' }"
@@ -18,7 +17,6 @@
 		>
 			Select Languages...
 		</div>
-	</div>
 	<DynamicDialog />
 </template>
 
