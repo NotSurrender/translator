@@ -23,7 +23,7 @@ defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
 
-function handleInputChange(event: Event) {
+function handleTextAreaChange(event: Event) {
   return (event.target as HTMLTextAreaElement).value
 }
 </script>
