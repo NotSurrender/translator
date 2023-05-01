@@ -30,6 +30,6 @@ function handleTextAreaChange(event: Event) {
 
 <style scoped>
 .textarea {
-  height: 120px;
+  height: 120px !important;
 }
 </style>
