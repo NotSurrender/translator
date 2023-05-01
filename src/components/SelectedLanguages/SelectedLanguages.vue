@@ -1,22 +1,22 @@
 <template>
-		<Breadcrumb 
-			v-if="selectedLanguages.length"
-			:style="{ cursor: loaderStore.isLoading ? 'wait' : 'pointer' }"
-			:model="selectedLanguages" 
-			@click="openModal" 
-		>
-			<template #item="{item}">
-				<span class="item">{{ item.label }}</span>
-			</template>
-		</Breadcrumb>
-		<div 
-			v-if="!selectedLanguages.length" 
-			:style="{ cursor: loaderStore.isLoading ? 'wait' : 'pointer' }"
-			class="p-breadcrumb breadcrumb-blank" 
-			@click="openModal"
-		>
-			Select Languages...
-		</div>
+	<Breadcrumb 
+		v-if="selectedLanguages.length"
+		:style="{ cursor: loaderStore.isLoading ? 'wait' : 'pointer' }"
+		:model="selectedLanguages" 
+		@click="openModal" 
+	>
+		<template #item="{item}">
+			<span class="item">{{ item.label }}</span>
+		</template>
+	</Breadcrumb>
+	<div 
+		v-if="!selectedLanguages.length" 
+		:style="{ cursor: loaderStore.isLoading ? 'wait' : 'pointer' }"
+		class="p-breadcrumb breadcrumb-blank" 
+		@click="openModal"
+	>
+		Select Languages...
+	</div>
 	<DynamicDialog />
 </template>
 
