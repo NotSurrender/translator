@@ -6,7 +6,7 @@
     maxlength="1000" 
     cols="30"
     :disabled="disabled"
-    v-on:input="$emit('update:modelValue', handleInputChange($event))"
+    v-on:input="$emit('update:modelValue', handleTextAreaChange($event))"
     :value="modelValue"
   />
 </template>
