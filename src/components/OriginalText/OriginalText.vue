@@ -1,7 +1,7 @@
 <template>
   <Textarea 
     :disabled="loaderStore.isLoading"
-    v-model="translatorStore.originalText" 
+    v-model="translatorStore.originalText"
   />
 </template>
 
