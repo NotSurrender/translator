@@ -24,7 +24,7 @@ defineEmits<{
 }>()
 
 function handleInputChange(event: Event) {
-  return (event.target as HTMLInputElement).value
+  return (event.target as HTMLTextAreaElement).value
 }
 </script>
 
