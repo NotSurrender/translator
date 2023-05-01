@@ -1,18 +1,34 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Language } from '@/components/LanguagePickList'
+
+export interface Language {
+  id: string
+  name: string
+  code: string
+}
 
 export const useLanguagesStore = defineStore('languages', () => {
-  const sourceLanguageList = ref<Language[][]>([[], []])
+  const languagesValue = ref<Language[][]>([[], []])
   const selectedLanguages = ref<Language[]>([])
 
-  function setSourceLanguageList(languages: Language[][]) {
-    sourceLanguageList.value = languages
+  function setLanguagesValue(sourceLanguages: Language[]): void
+  function setLanguagesValue(languages: Language[][]): void
+
+  function setLanguagesValue(languages: unknown[]) {
+    if (Array.isArray(languages[0])) {
+      languagesValue.value = languages as Language[][]
+    } else {
+      languagesValue.value = [languages as Language[], []]
+    }
+  }
+
+  function setMovedLanguages(languages: Language[]) {
+    languagesValue.value = [languagesValue.value[0], languages]
   }
 
   function confirm() {
-    selectedLanguages.value = sourceLanguageList.value[1]
+    selectedLanguages.value = languagesValue.value[1]
   }
 
-  return { sourceLanguageList, selectedLanguages, setSourceLanguageList, confirm }
+  return { languagesValue, selectedLanguages, setLanguagesValue, setMovedLanguages, confirm }
 })

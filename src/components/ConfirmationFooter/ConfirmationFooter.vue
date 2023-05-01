@@ -25,10 +25,10 @@ const languagesStore = useLanguagesStore();
 
 function handleConfirm() {
   languagesStore.confirm();
-  dialogRef?.value.close();
+  closeDialog();
 }
 
-const closeDialog = () => {
+function closeDialog() {
   dialogRef?.value.close();
 };
 </script>

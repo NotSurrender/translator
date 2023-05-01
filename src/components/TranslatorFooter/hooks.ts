@@ -1,21 +1,19 @@
 import { computed } from 'vue'
-import { HttpClient } from '@/helpers/http-client'
+import { queryTranslateText } from '@/api/queries'
 import { useLanguagesStore } from '@/stores/languages'
 import { useTranslatorStore } from '@/stores/translator'
-import { TRANSLATOR_API } from '@/config'
-import type {
-  TranslatorApiTranslationRequestData,
-  TranslatorApiTranslationResponseData
-} from './interfaces'
+import { useLoaderStore } from '@/stores/loader'
+import type { TranslatorApiTranslationRequestData } from '@/api/interfaces'
 
 export function useTranslatorFooter() {
   const translatorStore = useTranslatorStore()
   const languagesStore = useLanguagesStore()
+  const loaderStore = useLoaderStore()
 
   const disabled = computed(() => {
     const isMinLanguagesSelected = languagesStore.selectedLanguages.length > 1
 
-    return !translatorStore.originalText || translatorStore.isLoading || !isMinLanguagesSelected
+    return !translatorStore.originalText || loaderStore.isLoading || !isMinLanguagesSelected
   })
 
   function handleTextClear() {
@@ -24,28 +22,25 @@ export function useTranslatorFooter() {
   }
 
   async function handleTextTranslate() {
-    translatorStore.isLoading = true
-    let text = ''
+    loaderStore.isLoading = true
+    let translatedText = translatorStore.originalText
 
     for (let i = 0; i < languagesStore.selectedLanguages.length - 1; i++) {
       try {
-        text = translatorStore.originalText
-        const { translations } = await HttpClient.post<
-          TranslatorApiTranslationResponseData,
-          TranslatorApiTranslationRequestData
-        >(TRANSLATOR_API + '/text', {
+        const requestData: TranslatorApiTranslationRequestData = {
           from: languagesStore.selectedLanguages[i].code,
-          texts: [text],
+          texts: [translatedText],
           to: [languagesStore.selectedLanguages[i + 1].code]
-        })
-        text = translations[0].translated[0]
+        }
+
+        translatedText = await queryTranslateText(requestData)
       } catch (error) {
         console.error(error)
       }
     }
 
-    translatorStore.isLoading = false
-    translatorStore.translatedText = text
+    loaderStore.isLoading = false
+    translatorStore.translatedText = translatedText
   }
 
   return {

@@ -4,7 +4,7 @@
       item
       listStyle="width: 200px; height:342px" 
       dataKey="id"
-      :modelValue="languagesStore.sourceLanguageList"
+      :modelValue="languagesStore.languagesValue"
       :moveAllToTargetProps="{ style: { display: 'none' } }"
       :moveAllToSourceProps="{ style: { display: 'none' } }"
       :moveTopButtonProps="{ style: { display: 'none' }}"
@@ -27,80 +27,27 @@
         </div>
       </template>
     </PickList>
-    <Button class="clear-button" :disabled="clearButtonDisabled" @click="clearLanguageList">Clear</Button>
+    <Button class="clear-button" :disabled="clearButtonDisabled" @click="clearMovedLanguages">Clear</Button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import PickList, { 
-  type PickListMoveToSourceEvent, 
-  type PickListMoveToTargetEvent, 
-  type PickListReorderEvent, 
-  type PickListSelectionChangeEvent 
-} from 'primevue/picklist';
+import PickList from 'primevue/picklist';
 import Button from 'primevue/button';
+import { useLanguagePickList } from './hooks'
 
-import type { Language } from './interfaces';
-import { useLanguagesStore } from '@/stores/languages';
+const { 
+  languagesStore, 
+  moveToTargetButtonDisabled, 
+  moveToSourceButtonDisabled,
+  clearButtonDisabled,
+  handleChangeSelection,
+  handleMoveToTarget,
+  handleMoveToSource,
+  handleReorder,
+  clearMovedLanguages
+} = useLanguagePickList();
 
-const languagesStore = useLanguagesStore();
-const moveToTargetButtonDisabled = ref(true);
-const moveToSourceButtonDisabled = ref(true);
-const clearButtonDisabled = computed(() => {
-  return !languagesStore.sourceLanguageList[1].length;
-});
-
-function handleChangeSelection(event: PickListSelectionChangeEvent) {
-  const [[selectedSourceLanguage], [selectedMovedLanguage]] = event.value;
-  const isSelectedOnlySourceLanguage = Boolean(selectedSourceLanguage && !selectedMovedLanguage);
-  const isSelectedOnlyMovedLanguage = Boolean(selectedMovedLanguage && !selectedSourceLanguage);
-  const isSelectedBothLanguages = Boolean(selectedSourceLanguage && selectedMovedLanguage);
-  const isLimitReached = languagesStore.sourceLanguageList[1].length > 9;
-
-  if (isSelectedOnlySourceLanguage) {
-    moveToSourceButtonDisabled.value = true;
-    moveToTargetButtonDisabled.value = isLimitReached;
-  } else if (isSelectedOnlyMovedLanguage) {
-    moveToSourceButtonDisabled.value = false;
-  } else if (isSelectedBothLanguages) {
-    moveToTargetButtonDisabled.value = isLimitReached;
-    moveToSourceButtonDisabled.value = false;
-  } else {
-    moveToTargetButtonDisabled.value = true;
-    moveToSourceButtonDisabled.value = true;
-  }
-}
-
-function handleMoveToTarget({ items }: PickListMoveToTargetEvent) {
-  const [sourceLanguages, movedLanguages] = languagesStore.sourceLanguageList;
-  const updatedMovedLanguages = [...movedLanguages, ...items]
-    .map<Language>((item, index) => ({
-      id: item.code + index,
-      code: item.code,
-      name: item.name
-    }));
-
-  languagesStore.setSourceLanguageList([sourceLanguages, updatedMovedLanguages]);
-}
-
-function handleMoveToSource({ items }: PickListMoveToSourceEvent) {
-  const [sourceLanguages, movedLanguages] = languagesStore.sourceLanguageList;
-  const languageToMoveId = items[0].id;
-  const updatedMovedLanguages = movedLanguages.filter(({ id }) => id !== languageToMoveId);
-  languagesStore.setSourceLanguageList([sourceLanguages, updatedMovedLanguages]);
-}
-
-function handleReorder({ value }: PickListReorderEvent) {
-  const [sourceLanguages, movedLanguages] = value;
-  languagesStore.setSourceLanguageList([sourceLanguages, movedLanguages]);
-}
-
-function clearLanguageList() {
-  const [allLanguages] = languagesStore.sourceLanguageList;
-  languagesStore.setSourceLanguageList([allLanguages, []]);
-  moveToSourceButtonDisabled.value = true; 
-}
 </script>
 
 <style scoped>
